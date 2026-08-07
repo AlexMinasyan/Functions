@@ -1,0 +1,5 @@
+name||codeblock||description||keywords||language
+px_to_mm||def px_to_mm(px, dpi = 67):&&&&return (px \* 25.4) / dpi||converts pixels to mm||px,pixels,mm,milimeters,dpi||python
+px_to_pt||def px_to_pt(px):&&&&return 0.75 \* px||converts pixels to points||px,pixels,pt,points||python
+to_matrix||def to_matrix(l, n):&&&&return [l[i:i+n] for i in range(0, len(l), n)]&&&&||converts a list to a matrix of row-count n||list,matrix,converts||python
+image_size||def image_size(path):&&&&im = PIL.Image.open(path)&&&&width, height = im.size&&&&return (width, height)&&&&||Returns the size of the image in pixels, requires the PIL package.||PIL,image,pixel,size||python
