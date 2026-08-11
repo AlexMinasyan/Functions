@@ -9,16 +9,22 @@ This was created to allow one to reuse their code from past projects by having a
 ###### Store Functions
 To store a function just run the command
 ``` 
-extract_function [TARGET_FILE] [START_LINE] [END_LINE]
+extract_function [OPTIONS] [TARGET_FILE] [START_LINE] [END_LINE]
 ```
 This will pull all code between `[START_LINE]` and `[END_LINE]` in the `[TARGET_FILE]` and if it is in the list of accepted langauges, extract the name on its own, else it will prompt you for the name. Then it will prompt you for a description as well as a list of desired keywords. Finally it will store it in the CSV file.
+
+For `[OPTIONS]` there are:
+ - `-c` or `--Clipboard` stores the function on your clipboard so there is no need to use the other arguments.
 
 ###### Use Function
 To use a function just run the command
 ```
-use_function [TARGET_FILE] [LINE_INSERT]
+use_function [TARGET_FILE] [LINE_INSERT] [OPTIONS]
 ```
 This will open up a fuzzy finder that prompts for name, language, description, and keywords; select one and then it will insert the function into the `[TARGET_FILE]` at line `[LINE_INSERT]`.
+
+For `[OPTIONS]` there are:
+ - `-c` or `--Clipboard` just inserts the function on the clipboard.
 
 ## Installation
 To install simply put this entire folder somewhere on your computer, its not that important where. Change the following lines to that the path for the functions.csv file:
