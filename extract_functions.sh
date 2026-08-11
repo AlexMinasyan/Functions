@@ -1,29 +1,66 @@
 # Takes the csv and outputs it as name - language - description - keywords and allows one to fuzzy search through it.
 # awk -F'\\|\\|' '{print $1," - ",$5," - ",$3, " - ",$4}'  functions.csv | fzf
 
-path=$1
-l1=$2
-l2=$3
+# Arguments are PATH, flag
+c_flag=false
+
+
+while [ "$1" != "" ]; do
+    case $1 in
+    -c | --Clipboard)
+        echo "Clipboard"
+        shift 
+        c_flag=true
+        pbpaste | xargs echo ;;
+    *)
+        path=$1
+        shift
+        echo "$path"
+        l1=$1
+        shift
+        echo "$l1"
+        l2=$1
+        shift
+        echo "$l2"
+        echo "Line Range: $l1 - $l2" ;;
+    esac
+done
+
+# c_flag=false
+
+# while getopts 'c' flag; do
+#     case "${flag}" in
+#         c) c_flag=true ;;
+#         *) exit 1;;
+#     esac
+# done
 
 # Since extracting lines with `sed` does not preserve the new lines properly, the alternative was to write the important 
 # lines into a file and replace the newlines with '&&&&'. These '&&&&' will then be replaced with return characters when output.
-line_count=`cat "$path" | wc -l | tr -d ' '`
-function_block=$(sed -n "${l1},${l2}p" "$path")
-
 touch temp.txt
 
-for i in $(seq 0 $line_count); do
-    if [ $i -ge $l1 -a $i -le $l2 ]; then
-        echo $(sed -n "${i}p" "$path") >> temp.txt
-    fi
-done
+if [ c_flag == false ]; then
+    line_count=`cat "$path" | wc -l | tr -d ' '`
+    function_block=$(sed -n "${l1},${l2}p" "$path")
 
-# Since `awk` cannot use '\\n' within its ORS parameter, I am using &&&& as the separator for lines.
-function_block=`awk 1 ORS="&&&&" "temp.txt"`
+    for i in $(seq 0 $line_count); do
+        if [ $i -ge $l1 -a $i -le $l2 ]; then
+            echo $(sed -n "${i}p" "$path") >> temp.txt
+        fi
+    done
 
-# recovered_block=`echo $function_block | sed -e "s/&&&&/[\][n]/g"`
+    # Since `awk` cannot use '\\n' within its ORS parameter, I am using &&&& as the separator for lines.
+    function_block=`awk 1 ORS="&&&&" "temp.txt"`
+
+else
+    pbpaste | xargs echo > temp.txt
+    function_block=`awk 1 ORS="&&&&" "temp.txt"`
+    echo "$function_block"
+fi
 
 rm -rf temp.txt
+
+# recovered_block=`echo $function_block | sed -e "s/&&&&/[\][n]/g"`
 
 lang=''
 case $path in
