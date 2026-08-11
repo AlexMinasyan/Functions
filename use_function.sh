@@ -21,9 +21,6 @@ if [ $c_flag == false ]; then
     desc=`awk -F' -- ' '{print $3}' <<< "$params" | awk '{$1=$1};1'`
     keywords=`awk -F' -- ' '{print $4}' <<< "$params" | tr -d ' '`
 
-    # grep_out=`grep -e "$name||.*||$desc||$keywords||$lang" functions.csv`
-    # grep_out=`echo $grep_out | sed -E "s/[\][*]/\x2A/g"`
-    # echo "$grep_out"
     temp=`grep -e "$name||.*||$desc||$keywords||$lang" '/Users/alex/Documents/Computer/Functions/functions.csv' | sed -E "s/[\][*]/\x2A/g"`
     code=`awk -F'[|][|]' '{print $2}' <<< "$temp"`
 else   

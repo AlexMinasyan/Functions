@@ -26,15 +26,6 @@ while [ "$1" != "" ]; do
     esac
 done
 
-# c_flag=false
-
-# while getopts 'c' flag; do
-#     case "${flag}" in
-#         c) c_flag=true ;;
-#         *) exit 1;;
-#     esac
-# done
-
 # Since extracting lines with `sed` does not preserve the new lines properly, the alternative was to write the important 
 # lines into a file and replace the newlines with '&&&&'. These '&&&&' will then be replaced with return characters when output.
 touch temp.txt
@@ -59,8 +50,6 @@ else
 fi
 
 rm -rf temp.txt
-
-# recovered_block=`echo $function_block | sed -e "s/&&&&/[\][n]/g"`
 
 lang=''
 case $path in
